@@ -1,8 +1,16 @@
-$primaryColor: rgb(251, 251, 251);
-$secondaryColor: #909090;
+$primaryColor: #f4f3f3;
+$secondaryColor: #bbbbbb;
 $tertiaryColor: #FF6206;
 $quaternaryColor: #e98614;
 $colorHighlight: #FF6206;
+
+$mainFont:          Helvetica, sans-serif;
+$mainDkColor:       rgba(0, 0, 0, 0.2);/* darken($mainColor, 4%) - #383838 */
+$mainDklColor:      transparent;/* rgba(0, 0, 0, 0.1) */
+$mainLhColor:       rgba(255, 255, 255, 0.1); /* #515151 */
+$mainLhlColor:      rgba(255, 255, 255, 0.7);
+$tagBg:             #804f7b;
+$secColor:          $tagBg;
 @import "grapesjs/src/styles/scss/main.scss";
 
 *{
@@ -83,5 +91,8 @@ $colorHighlight: #FF6206;
   }
   &.icon-bullet-list{
     background-image: url('data:image/svg+xml;utf8,<svg viewBox="0 0 109 44" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="5" cy="5" r="5" fill="#9A9797" /><circle cx="5" cy="22" r="5" fill="#9A9797" /><circle cx="5" cy="39" r="5" fill="#9A9797" /><rect x="23" y="2" width="86" height="7" rx="3.5" fill="#9A9797" /><rect x="23" y="19" width="86" height="7" rx="3.5" fill="#9A9797" /><rect x="23" y="36" width="86" height="7" rx="3.5" fill="#9A9797" /></svg>');
+  }
+  &.icon-fullscreen{
+    background-image: url('data:image/svg+xml;utf8,<svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><g><path fill="none" d="M0 0h24v24H0z"></path><path d="M20 3h2v6h-2V5h-4V3h4zM4 3h4v2H4v4H2V3h2zm16 16v-4h2v6h-6v-2h4zM4 19h4v2H2v-6h2v4z"></path></g></svg>');
   }
 }

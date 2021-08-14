@@ -9,7 +9,7 @@ import grapesjs from "grapesjs";
 // import pluginFilestack from 'grapesjs-plugin-filestack';
 
 import initBlocksPlugin from "./plugins/blocks";
-
+import initPanels from "./panels";
 // import commands from "./commands";
 // import components from "./components";
 // import panels from "./panels";
@@ -111,7 +111,7 @@ export default grapesjs.plugins.add(
     const config = { ...defaults, ...presetOpts };
 
     initBlocksPlugin(editor, config);
-
+    // initPanels(editor, config);
     // Load plugins
     // textBlocksOpts && addPlugin(TextBlocksPlugin, textBlocksOpts);
     // blocksBasicOpts && pluginBlocks(editor, blocksBasicOpts);

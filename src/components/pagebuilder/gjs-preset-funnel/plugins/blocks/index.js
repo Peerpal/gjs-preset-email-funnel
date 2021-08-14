@@ -1,4 +1,4 @@
-import { addPlugin } from "./fn";
+import { addPlugin } from "../../helpers";
 import textBlocks from "./text";
 import columnBlocks from "./column";
 import formBlocks from "./form";
@@ -7,25 +7,6 @@ export default (editor, opts) => {
   const config = opts;
 
   const defaults = {
-    /* blocks: [
-      // text
-      "headline-block",
-      "text-basic-block",
-      "bullet-list-block",
-
-      // columns
-      "column-1-block",
-      "column-2-block",
-      "column-3-block",
-      "column-4-block"
-
-      // "text",
-      // "link",
-      // "image",
-      // "video",
-      // "map"
-    ], */
-
     columnBlocksOpts: {},
 
     textBlocksOpts: {},
