@@ -1,28 +1,19 @@
 import grapesjs from "grapesjs";
 import "./gjs.scss";
 import { useEffect, useState, useRef } from "react";
-import BuilderCanvas from "./styled/BuilderCanvas";
-import BuilderSidebar from "./styled/BuilderSidebar";
-import { STYLED_GRID_WRAPPER } from "./styled";
+
 import "./gjs-preset-funnel";
-import {
-  RiArrowGoBackLine,
-  RiArrowGoForwardLine,
-  RiFullscreenLine,
-  RiFullscreenExitFill,
-  RiTabletLine,
-  RiSmartphoneLine,
-  RiTv2Line,
-  RiMistFill
-} from "react-icons/ri";
-import {
-  Tabs,
-  TabList,
-  Button,
-  TabPanels,
-  Tab,
-  TabPanel
-} from "@chakra-ui/react";
+// import {
+//   RiArrowGoBackLine,
+//   RiArrowGoForwardLine,
+//   RiFullscreenLine,
+//   RiFullscreenExitFill,
+//   RiTabletLine,
+//   RiSmartphoneLine,
+//   RiTv2Line,
+//   RiMistFill
+// } from "react-icons/ri";
+import { Tabs, TabList, TabPanels, Tab, TabPanel } from "@chakra-ui/react";
 import styled from "styled-components";
 
 const maxHeight = "calc(100vh - 87px)";
@@ -60,8 +51,10 @@ const StickyPanel = styled("div")`
   display: flex;
   color: white;
   gap: 8px;
+  scrollbar-width: thin;
   justify-content: center;
   align-items: center;
+  overflow-x: auto;
   z-index: 100;
   ${(props) => (props.buttom ? "bottom: 0" : "top: 0")}
 `;
@@ -83,8 +76,9 @@ const PanelContent = styled("div")`
     .gjs-block {
       box-shadow: none;
       color: #c4c4c4;
+      background: white;
       &:hover {
-        color: red;
+        color: #ff6206;
       }
     }
   }
@@ -105,6 +99,7 @@ const EditorAside = styled("div")`
   flex-basis: 200px;
   position: relative;
   padding: 0;
+  max-width: 300px;
 `;
 const EditorGrid = styled("div")`
   display: flex;
@@ -116,20 +111,20 @@ const EditorGrid = styled("div")`
   width: 100%;
 `;
 const EditorMain = styled("div")`
-  background: #333;
+  background: #535353;
   overflow: hidden;
   position: relative;
-  outline: 2px dashed orange;
-  outline-offset: -4px;
+  /* outline: 2px dashed orange; */
+  /* outline-offset: -4px; */
   flex-grow: 1;
   .gjs-frame-wrapper {
     padding: 10px;
-    background: red;
+    background: #888;
   }
   .gjs-editor {
     background: transparent;
     .gjs-cv-canvas {
-      background: red;
+      background: #c3c3c3;
       height: 100%;
       top: 0;
       width: 100%;
@@ -149,6 +144,19 @@ const EditorCanvas = styled("section")`
   /* left: 0; */
   /* top: 0; */
 `;
+
+function TabElement({ label }) {
+  return (
+    <Tab
+      as={PanelHeader}
+      _selected={{
+        borderBottom: "2px solid #333",
+        color: "#060E4F"
+      }}>
+      {label}
+    </Tab>
+  );
+}
 
 function PageBuilder({ initialData = null }) {
   const canvas = useRef(null); //Canvas ref
@@ -175,6 +183,7 @@ function PageBuilder({ initialData = null }) {
     const obl = "open-blocks";
     const ful = "fullscreen";
     const prv = "preview";
+    const sv = "save-changes";
 
     if (!editor) {
       const config = {
@@ -196,6 +205,7 @@ function PageBuilder({ initialData = null }) {
         layerManager: {
           appendTo: lm.current
         },
+        // panels: { defaults: [] },
         selectorManager: {
           appendTo: sm.current
         },
@@ -224,29 +234,20 @@ function PageBuilder({ initialData = null }) {
             },
             {
               name: "Dimension",
-              open: true,
-              // Use built-in properties
+              open: false,
               buildProps: [
                 "width",
-                "min-width",
                 "height",
+                "max-width",
                 "min-height",
-                "padding",
-                "margin"
-              ],
-              // Use `properties` to define/override single property
-              properties: [
-                {
-                  // Type of the input,
-                  // options: integer | radio | select | color | slider | file | composite | stack
-                  type: "integer",
-                  name: "The width", // Label for the property
-                  property: "width", // CSS property (if buildProps contains it will be extended)
-                  units: ["px", "%", "em"], // Units, available only for 'integer' types
-                  defaults: "auto", // Default value
-                  min: 0 // Min value, available only for 'integer' types
-                }
+                "margin",
+                "padding"
               ]
+            },
+            {
+              name: "Border",
+              open: false,
+              buildProps: ["border-radius", "border"]
             },
             {
               name: "Background",
@@ -348,6 +349,16 @@ function PageBuilder({ initialData = null }) {
                   attributes: {
                     class: "icon icon-sw"
                   }
+                },
+                {
+                  id: ful,
+                  command: ful,
+                  context: ful,
+                  togglable: true,
+                  label: "",
+                  attributes: {
+                    class: "icon icon-fullscreen"
+                  }
                 }
               ]
             },
@@ -360,6 +371,13 @@ function PageBuilder({ initialData = null }) {
                   id: prv,
                   context: prv,
                   command: (e) => e.runCommand(prv),
+                  class: "text-gray-400",
+                  label: "<button>Preview</button>"
+                },
+                {
+                  id: sv,
+                  context: sv,
+                  command: (e) => e.runCommand(sv),
                   class: "text-gray-400",
                   label: "<button>Preview</button>"
                 }
@@ -377,6 +395,14 @@ function PageBuilder({ initialData = null }) {
 
       setEditor(e);
     } else {
+      // Add panels
+      // editor.Panels.addPanel({
+      //   id: "cmd-left",
+      //   el: cal.current
+      // });
+      editor.Commands.add(sv, {
+        run: (editor) => console.log("Saving changes")
+      });
       editor.Commands.add("set-device-desktop", {
         run: (editor) => editor.setDevice("Desktop")
       });
@@ -404,30 +430,11 @@ function PageBuilder({ initialData = null }) {
         <EditorAside id="aside-panel" ref={aside}>
           <Tabs as={AsideTop}>
             <TabList as={PanelHeading} bg="white">
-              <Tab
-                as={PanelHeader}
-                _selected={{
-                  borderBottom: "2px solid #333",
-                  color: "#060E4F"
-                }}>
-                Elements
-              </Tab>
-              <Tab
-                as={PanelHeader}
-                _selected={{
-                  borderBottom: "2px solid #333",
-                  color: "#060E4F"
-                }}>
-                Layers
-              </Tab>
-              <Tab
-                as={PanelHeader}
-                _selected={{
-                  borderBottom: "2px solid #333",
-                  color: "#060E4F"
-                }}>
-                Styles
-              </Tab>
+              <TabElement label="Elements" />
+              <TabElement label="Layers" />
+              <TabElement label="Layout" />
+              <TabElement label="Styles" />
+              <TabElement label="Advanced" />
             </TabList>
 
             <TabPanels>

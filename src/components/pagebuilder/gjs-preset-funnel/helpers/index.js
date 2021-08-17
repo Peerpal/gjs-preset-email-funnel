@@ -18,8 +18,8 @@ export const toAdd = (name, blocks) => blocks?.indexOf(name) >= 0;
 
 /**
  * @desc Initializes plugin using plugin initialization function
- * @param {Function} initPlugin - Plugin initialization function
- * @param {*} pluginOpts - Plugin options
+ * @param {function} initPlugin - Plugin initialization function
+ * @param {object} pluginOpts - Plugin options
  */
 export const addPlugin = (initPlugin, editor, pluginOpts) =>
   initPlugin(editor, pluginOpts);
